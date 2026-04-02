@@ -49,12 +49,14 @@ if "customerID" in df.columns:
 
 
 # ---------- Encode Categorical Variables ----------
+encoders = {}
+
 categorical_cols = df.select_dtypes(include=["object"]).columns
 
 for col in categorical_cols:
     encoder = LabelEncoder()
     df[col] = encoder.fit_transform(df[col])
-
+    encoders[col] = encoder
 
 # ---------- Split Features & Target ----------
 X = df.drop(columns=["Churn"])
@@ -143,3 +145,20 @@ feature_importance = pd.DataFrame({
 }).sort_values(by="importance", ascending=False)
 
 print("\nFeature Importance:\n", feature_importance)
+
+
+import joblib
+
+# Save model
+joblib.dump(rf_model, "model.pkl")
+
+# Save scaler
+joblib.dump(scaler, "scaler.pkl")
+
+# Save encoders
+joblib.dump(encoders, "encoders.pkl")
+
+# Save feature columns (VERY IMPORTANT)
+joblib.dump(X.columns.tolist(), "columns.pkl")
+
+print("✅ All pickle files saved successfully!")
