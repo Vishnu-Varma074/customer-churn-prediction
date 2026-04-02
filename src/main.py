@@ -160,5 +160,3 @@ joblib.dump(encoders, "encoders.pkl")
 
 # Save feature columns (VERY IMPORTANT)
 joblib.dump(X.columns.tolist(), "columns.pkl")
-
-print("✅ All pickle files saved successfully!")
